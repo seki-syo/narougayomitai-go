@@ -79,6 +79,8 @@ var (
 	noChoiBg               termbox.Attribute        //選択肢のバックグラウンド
 	choiFg                 termbox.Attribute        //選択中の文字
 	choiBg                 termbox.Attribute        //選択中のバックグラウンド
+	mu                     func()
+	md                     func()
 )
 
 //Init 初期化
@@ -99,9 +101,11 @@ func initChoiceList() {
 	choiFg = termbox.ColorBlack
 	choiBg = termbox.ColorGreen
 	pattern = pat1
+	mu = moveUp
+	md = moveDown
 
 	//キーを設定
-	SetInputFunction(moveUp, moveDown, func(){}, func(){}, cancelExe, selectExecute, func(){}, func(){})
+	SetInputFunction(mu, md, func() {}, func() {}, cancelExe, selectExecute, func() {}, func() {})
 }
 
 //setPattern リストパターンを設定
@@ -113,7 +117,7 @@ func setPattern(p ChoiceListDisplayPattern) {
 func setExecute(e func(int)) {
 	choiExe = e
 	//キーを設定
-	SetInputFunction(moveUp, moveDown, func(){}, func(){}, cancelExe, selectExecute, func(){}, func(){})
+	SetInputFunction(mu, md, func() {}, func() {}, cancelExe, selectExecute, func() {}, func() {})
 }
 
 //setSection 描画範囲を設定
@@ -152,7 +156,7 @@ func cancelSetting(exist bool, str string, exe func()) {
 	cancelString = str
 	cancelExe = exe
 	//キーを設定
-	SetInputFunction(moveUp, moveDown, func(){}, func(){}, cancelExe, selectExecute, func(){}, func(){})
+	SetInputFunction(mu, md, func() {}, func() {}, cancelExe, selectExecute, func() {}, func() {})
 }
 
 //listLen リストの要素数を返す(キャンセルも項目数に含む)

@@ -19,7 +19,7 @@ var (
 )
 
 //inputLoop 入力イベントをループで取得(ich:termboxのキーイベントを受け取る。 endch:trueを送信すると終了する)
-func inputLoop(ich chan termbox.Key) {
+func inputLoop() {
 	inputLock = false
 	lockerChan = make(chan bool, 1)
 	pushKeyEsc = func() {}
@@ -31,6 +31,8 @@ func inputLoop(ich chan termbox.Key) {
 	pushKeyEnterSpace = func() {}
 	pushKeyHome = func() {}
 	pushKeyEnd = func() {}
+	ich := make(chan termbox.Key, 1)
+	termbox.SetInputMode(termbox.InputAlt)
 
 	go func() {
 		for {
@@ -44,30 +46,30 @@ func inputLoop(ich chan termbox.Key) {
 
 	for {
 		select {
-		case inputLock = <-lockerChan: //ロックフラグを通信して変更
+		//case inputLock = <-lockerChan: //ロックフラグを通信して変更
 
 		case k := <-ich:
 			//キーイベントを受け取ったとき
-			if !inputLock {
-				switch k {
-				case termbox.KeyArrowUp:
-					pushKeyArrowUp()
-				case termbox.KeyArrowDown:
-					pushKeyArrowDown()
-				case termbox.KeyArrowLeft:
-					pushKeyArrowLeft()
-				case termbox.KeyArrowRight:
-					pushKeyArrowRight()
-				case termbox.KeyEnter, termbox.KeySpace:
-					pushKeyEnterSpace() //選択項目を実行
-				case termbox.KeyEsc, termbox.KeyBackspace:
-					pushKeyEsc()
-				case termbox.KeyHome, termbox.KeyF1:
-					pushKeyHome()
-				case termbox.KeyEnd, termbox.KeyF2:
-					pushKeyEnd()
-				default:
-				}
+			switch k {
+			case termbox.KeyArrowUp:
+				pushKeyArrowUp()
+			case termbox.KeyArrowDown:
+				pushKeyArrowDown()
+			case termbox.KeyArrowLeft:
+				pushKeyArrowLeft()
+			case termbox.KeyArrowRight:
+				pushKeyArrowRight()
+			case termbox.KeyEnter, termbox.KeySpace:
+				pushKeyEnterSpace() //選択項目を実行
+			case termbox.KeyEsc, termbox.KeyBackspace:
+				pushKeyEsc()
+			case termbox.KeyHome, termbox.KeyF1:
+				pushKeyHome()
+			case termbox.KeyEnd, termbox.KeyF2:
+				pushKeyEnd()
+			case termbox.KeyF12:
+				appquiet <- true //End
+			default:
 			}
 		default:
 		}

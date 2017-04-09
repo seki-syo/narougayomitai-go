@@ -1,0 +1,6 @@
+#vscodeのデバッグ用フォルダ（そもそもtermbox-goはvscodeからのdebugはエラーで動かない)
+.vscode/
+#仕様変更だけど不安でバックアップされているコード
+deleted/
+*.bat
+*.sh
