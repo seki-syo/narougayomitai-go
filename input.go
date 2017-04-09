@@ -68,7 +68,7 @@ func inputLoop() {
 			case termbox.KeyEnd, termbox.KeyF2:
 				pushKeyEnd()
 			case termbox.KeyF12:
-				appquiet <- true //End
+				appquiet <- true //強制終了
 			default:
 			}
 		default:
