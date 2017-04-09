@@ -5,7 +5,9 @@ import (
 )
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
 	run()
+}
 
+func init() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
 }
